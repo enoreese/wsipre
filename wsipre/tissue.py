@@ -71,7 +71,7 @@ def detect_tissue(wsi, downsampling_factor=64):
     mask = morphology.remove_small_objects(mask, min_size=5000)
 
     mask = mask.astype(np.uint8)
-    _, mask_contours, _ = cv2.findContours(
+    mask_contours, _ = cv2.findContours(
         mask, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
 
     return mask_contours, slide, downsampling_factor
