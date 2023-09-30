@@ -430,7 +430,9 @@ class Slide(_AnnotatedOpenSlide):
 
         """
         if self.tissue_mask is None:
+            print("Tissue mask is None. Generating tissue mask...")
             self.get_tissue_mask()
+            print("Tissue mask generated successfully.")
 
         if avoid_labels is None:
             # Select coordinates matching tissue (labeled as 1)
@@ -452,6 +454,9 @@ class Slide(_AnnotatedOpenSlide):
             new_mask = np.where(np.isin(mask, avoid_labels), 2, new_mask)
 
             pixels_in_roi = tuple(zip(*np.where(new_mask == 1)))
+
+        if not pixels_in_roi:
+            pixels_in_roi = [(500, 500)]
 
         coordinates = self._get_random_coordinates(
             pixels_in_roi, level, self.downsampling_factor, size)
