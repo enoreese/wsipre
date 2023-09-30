@@ -430,9 +430,7 @@ class Slide(_AnnotatedOpenSlide):
 
         """
         if self.tissue_mask is None:
-            print("Tissue mask is None. Generating tissue mask...")
             self.get_tissue_mask()
-            print("Tissue mask generated successfully.")
 
         if avoid_labels is None:
             # Select coordinates matching tissue (labeled as 1)
