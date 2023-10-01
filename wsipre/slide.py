@@ -228,9 +228,9 @@ class Slide(_AnnotatedOpenSlide):
 
         """
         if self.polygons is None:
-                raise ValueError(
-                    'No annotation is available. Please load an annotation ' +
-                    'or consider using "get_thumbnail" instead.')
+            raise ValueError(
+                'No annotation is available. Please load an annotation ' +
+                'or consider using "get_thumbnail" instead.')
 
         thumb = self.get_thumbnail(size)
 
@@ -279,9 +279,9 @@ class Slide(_AnnotatedOpenSlide):
 
         """
         if self.polygons is None:
-                raise ValueError(
-                    'No annotation is available. Please load an annotation ' +
-                    'or consider using "read_region" instead.')
+            raise ValueError(
+                'No annotation is available. Please load an annotation ' +
+                'or consider using "read_region" instead.')
         downsampling_factor = self.level_downsamples[level]
         slide_region = self.read_region(location, level, size)
 
@@ -297,7 +297,7 @@ class Slide(_AnnotatedOpenSlide):
 
         mask_region = np.zeros(size[::-1])
         mask_region = self._draw_polygons(
-           mask_region, polygons, polygon_type, line_thickness)
+            mask_region, polygons, polygon_type, line_thickness)
 
         return slide_region, mask_region
 
@@ -346,11 +346,11 @@ class Slide(_AnnotatedOpenSlide):
         (mask_contours,
          self.downsampled_slide,
          self.downsampling_factor) = tissue.detect_tissue(
-             self, downsampling_factor)
+            self, downsampling_factor)
 
         mask = np.zeros(self.downsampled_slide.shape[:2])
         self.tissue_mask = self._draw_tissue_polygons(
-           mask, mask_contours, polygon_type, line_thickness)
+            mask, mask_contours, polygon_type, line_thickness)
         self.tissue_label_map = {'background': 0, 'tissue': 1}
 
         return self
@@ -454,7 +454,7 @@ class Slide(_AnnotatedOpenSlide):
             pixels_in_roi = tuple(zip(*np.where(new_mask == 1)))
 
         if not pixels_in_roi:
-            pixels_in_roi = [(500, 500)]
+            pixels_in_roi = tuple(zip(*np.where(self.tissue_mask == 0)))
 
         coordinates = self._get_random_coordinates(
             pixels_in_roi, level, self.downsampling_factor, size)
@@ -495,7 +495,7 @@ class Slide(_AnnotatedOpenSlide):
         """Pick random patch to crop from WSI."""
         # Get thumbnail and select coordinates at random
         _, mask, downsampling_factor = self.get_thumbnail_with_annotation(
-             size=(5000, 5000), polygon_type='area')
+            size=(5000, 5000), polygon_type='area')
 
         # Select coordinates matching target class
         pixels_in_roi = tuple(zip(*np.where(mask == target_class)))
